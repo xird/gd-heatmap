@@ -3,7 +3,7 @@
 /**
  * A class for generating heatmaps using the GD image library.
  *
- * http://blog.ampli.fi/gd-heatmap-library
+ * http://blog.ampli.fi/heatmap-generation-library-using-php-and-gd/
  *
  * TODO Automatic generation of gradient from source or from scratch.
  *
