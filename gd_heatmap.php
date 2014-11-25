@@ -194,16 +194,18 @@ Class gd_heatmap {
   }
   
   /**
-   * Prints out the generated image.
+   * Prints out the generated image or saves it into a file.
    */
-  public function output() {
-    header('Content-type: image/' . $this->config['format']);
+  public function output($filename = null) {
+    if (!$filename) {
+      header('Content-type: image/' . $this->config['format']);
+    }
     switch ($this->config['format']) {
       case 'png':
-        imagepng($this->im);
+        imagepng($this->im, $filename);
         break;
       case 'jpeg':
-        imagejpeg($this->im);
+        imagejpeg($this->im, $filename);
         break;
     }
     imagedestroy($this->im);

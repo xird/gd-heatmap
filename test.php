@@ -24,3 +24,7 @@ $heatmap = new gd_heatmap($data, $config);
 // library , comment this out to allow your browser to show you the error
 // messages.
 $heatmap->output();
+
+// Or save it to a file. Don't forget to set correct file permissions in the
+// target directory.
+//$heatmap->output('savetest.png');
