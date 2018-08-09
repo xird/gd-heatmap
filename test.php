@@ -15,6 +15,7 @@ $config = array(
   'r' => 50,
   'dither' => FALSE,
   'format' => 'jpeg',
+  'fill_with_smallest' => false,
 );
 
 // Create a new heatmap based on the data and the config.

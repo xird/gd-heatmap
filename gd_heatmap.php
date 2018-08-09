@@ -30,6 +30,10 @@ Class gd_heatmap {
    *     nicer but is heavier to process.
    *   dither - Boolean. Dithered images tend to look better than non-dithered
    *     if noc is about less than 16.
+   *   format - String, "png" or "jpeg"
+   *   fill_with_smallest - Boolean. If set to true, the image won't be filled
+   *     (i.e. areas with 0 value won't be coloured) with white/transparent,
+   *     but instead with a colour that matches the gradient's low end.
    */
   function __construct($data, $config = array()) {
     $default_config = array(
@@ -40,6 +44,7 @@ Class gd_heatmap {
       'noc' => 16,
       'dither' => FALSE,
       'format' => 'png',
+      'fill_with_smallest' => false,
     );
     
     foreach ($default_config as $key => $value) {
@@ -124,7 +129,7 @@ Class gd_heatmap {
     $this->logg('Flattened black at ' . (microtime(1) - $time));
 
     // Get the gradient from an image file
-    $gi = 'gradient-' . $this->config['noc'] . '.png';
+    $gi = 'gradient-' . $this->config['noc'] . ($this->config['fill_with_smallest'] ? "-fill" : "") . '.png';
     if (!file_exists($gi)) {
       $this->error("Can't find gradient file " . $gi . ". Make one using gradient-source.jpg");
     }
@@ -155,9 +160,13 @@ Class gd_heatmap {
 
     $this->logg('Replaced black with rainbow at ' . (microtime(1) - $time));
 
-    // Finally switch from white background to transparent.
-    $closest = imagecolorclosest ($im, 255 , 255 , 255);
-    imagecolortransparent($im, $closest);
+    if (!$this->config['fill_with_smallest']) {
+      // Finally switch from white background to transparent.
+      $closest = imagecolorclosest ($im, 255 , 255 , 255);
+      imagecolortransparent($im, $closest);
+      $this->logg('Made transparent at ' . (microtime(1) - $time));
+    }
+
     $this->logg('done at ' . (microtime(1) - $time));
     
     // Debugging text
